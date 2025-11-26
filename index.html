@@ -254,8 +254,9 @@
            ========================================= */
         @media (max-width: 800px) {
             /* Adjust Homepage Text Size */
-            .home-content h1 { font-size: 2.5rem; }
-            .home-content p { font-size: 1rem; }
+            .home-content h1 { font-size: 2rem; margin-bottom: 8px; } /* Smaller Title */
+            .home-content p { font-size: 0.9rem; margin-bottom: 25px; } /* Smaller Subtitle */
+            .btn-home { padding: 14px 40px; font-size: 1rem; } /* Smaller Button */
 
             /* Switch Booking Section to Stacked Layout */
             #booking-section {
@@ -296,7 +297,7 @@
 
         /* Small Phones (iPhone SE etc) */
         @media (max-width: 380px) {
-            .home-content h1 { font-size: 2rem; }
+            .home-content h1 { font-size: 1.8rem; }
             .seat-grid { grid-template-columns: repeat(2, 30px) 15px repeat(2, 30px); gap: 5px; }
             .seat { width: 30px; height: 30px; font-size: 0.6rem; }
         }
