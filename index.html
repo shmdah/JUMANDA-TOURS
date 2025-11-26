@@ -76,6 +76,13 @@
             font-weight: 300;
         }
 
+        .buttons-wrapper {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
         .btn-home {
             padding: 18px 50px;
             font-size: 1.1rem;
@@ -88,6 +95,7 @@
             transition: transform 0.2s, background 0.2s;
             text-transform: uppercase;
             box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            min-width: 200px;
         }
 
         .btn-home:hover {
@@ -97,6 +105,28 @@
 
         .btn-home:active {
             transform: scale(0.95);
+        }
+
+        /* Secondary Button (Review) */
+        .btn-review {
+            padding: 18px 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            background: rgba(255,255,255,0.15);
+            border: 2px solid #fff;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            backdrop-filter: blur(5px);
+            min-width: 200px;
+        }
+
+        .btn-review:hover {
+            background: #fff;
+            color: #000;
+            transform: scale(1.05);
         }
 
         /* =========================================
@@ -240,6 +270,84 @@
             box-shadow: 0 4px 15px rgba(255, 180, 0, 0.3);
         }
 
+        /* =========================================
+           SECTION 3: REVIEW SECTION
+           ========================================= */
+        #review-section {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; min-height: 100vh;
+            background: #000;
+            z-index: 20;
+            padding: 80px 20px 20px 20px; /* Top padding for back button */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .review-container {
+            max-width: 800px;
+            width: 100%;
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid #333;
+            text-align: center;
+        }
+
+        .review-container h2 {
+            color: #ffb400;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid #444;
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            display: block;
+            max-height: 50vh;
+        }
+
+        .seat-description {
+            text-align: left;
+            padding: 20px;
+            background: #222;
+            border-radius: 10px;
+        }
+
+        .seat-description h3 {
+            color: #fff;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+
+        .seat-description ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .seat-description li {
+            margin-bottom: 12px;
+            font-size: 1rem;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .seat-description li strong {
+            color: #ffb400;
+        }
+
+
         /* TICKET POPUP */
         #ticketModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; color: black; padding: 25px; border-radius: 10px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 0 100px rgba(0,0,0,0.9); z-index: 200; border-top: 8px solid #ffb400; }
         .ticket-info { margin: 15px 0; text-align: left; padding: 15px; background: #f8f8f8; border: 1px solid #ddd; border-radius: 5px; }
@@ -256,7 +364,7 @@
             /* Adjust Homepage Text Size */
             .home-content h1 { font-size: 2rem; margin-bottom: 8px; } /* Smaller Title */
             .home-content p { font-size: 0.9rem; margin-bottom: 25px; } /* Smaller Subtitle */
-            .btn-home { padding: 14px 40px; font-size: 1rem; } /* Smaller Button */
+            .btn-home, .btn-review { padding: 14px 30px; font-size: 0.9rem; min-width: 160px; } /* Smaller Button */
 
             /* Switch Booking Section to Stacked Layout */
             #booking-section {
@@ -293,6 +401,11 @@
             
             /* Ensure modal fits */
             #ticketModal { width: 85%; }
+
+            /* Review Section Mobile */
+            #review-section { padding-top: 60px; align-items: flex-start; }
+            .review-container { padding: 20px; }
+            .seat-description li { font-size: 0.9rem; }
         }
 
         /* Small Phones (iPhone SE etc) */
@@ -322,7 +435,10 @@
         <div class="home-content">
             <h1>Jumanda Tours</h1>
             <p>Luxury Travel: Nairobi ⇄ Mombasa</p>
-            <button class="btn-home" onclick="goToBooking()">Book Now</button>
+            <div class="buttons-wrapper">
+                <button class="btn-home" onclick="goToBooking()">Book Now</button>
+                <button class="btn-review" onclick="goToReview()">Review Bus</button>
+            </div>
         </div>
     </div>
 
@@ -384,6 +500,30 @@
         </div>
     </div>
 
+    <!-- REVIEW SECTION -->
+    <div id="review-section">
+        <button class="btn-back" onclick="goToHome()">← Back</button>
+        <div class="review-container">
+            <h2>Luxury Seat Experience</h2>
+            <div class="video-wrapper">
+                 <video controls playsinline id="seatVideo">
+                    <source src="image/seatreview.mp4" type="video/mp4">
+                    Your browser does not support video.
+                 </video>
+            </div>
+            <div class="seat-description">
+                <h3>VIP & Standard Comfort</h3>
+                <ul>
+                    <li>✨ <strong>Reclining Seats:</strong> 140° recline for maximum sleep comfort.</li>
+                    <li>🔌 <strong>Power Ports:</strong> USB & AC outlets at every seat.</li>
+                    <li>🦵 <strong>Extra Legroom:</strong> Spacious design for tall passengers.</li>
+                    <li>📶 <strong>Free Wi-Fi:</strong> High-speed internet throughout the journey.</li>
+                    <li>❄️ <strong>Climate Control:</strong> Personal AC vents for every passenger.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <!-- TICKET POPUP -->
     <div id="ticketModal">
         <div class="ticket-header">
@@ -418,8 +558,27 @@
             }, 500);
         }
 
+        function goToReview() {
+            document.getElementById('home-section').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('home-section').style.display = 'none';
+                document.getElementById('review-section').style.display = 'flex';
+                document.getElementById('bgVideo').pause();
+                // Play review video automatically if desired, or let user click play
+                // document.getElementById('seatVideo').play();
+                window.scrollTo(0, 0);
+            }, 500);
+        }
+
         function goToHome() {
+            // Close Booking
             document.getElementById('booking-section').style.display = 'none';
+            // Close Review
+            document.getElementById('review-section').style.display = 'none';
+            // Stop review video to save resources
+            document.getElementById('seatVideo').pause();
+
+            // Show Home
             document.getElementById('home-section').style.display = 'flex';
             document.getElementById('home-section').style.opacity = '1';
             document.getElementById('bgVideo').play();
