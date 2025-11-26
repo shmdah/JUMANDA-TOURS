@@ -2,255 +2,435 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jumanda Tours | 40 Seater VIP</title>
+    <!-- Ensures proper scaling on all mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jumanda Tours</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-        /* --- GLOBAL STYLES --- */
-        * { box-sizing: border-box; }
+        /* --- GLOBAL RESET --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2069&auto=format&fit=crop') no-repeat center center/cover;
-            background-attachment: fixed;
-            min-height: 100vh;
-            margin: 0;
+            background-color: #000;
+            color: white;
+            /* Prevent horizontal scroll */
+            overflow-x: hidden; 
+        }
+
+        /* =========================================
+           SECTION 1: HOME PAGE (Just Text & Button)
+           ========================================= */
+        #home-section {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px 10px;
+            z-index: 10;
+            transition: opacity 0.5s ease;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+        #bgVideo {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
             z-index: -1;
         }
 
-        /* --- MAIN CONTAINER --- */
-        .glass-container {
-            display: flex;
-            flex-direction: row;
-            gap: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            color: white;
-            max-width: 950px;
-            width: 100%;
+        /* Overlay to ensure white text is readable on video */
+        .video-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); 
+            z-index: 0;
         }
 
-        /* --- LEFT: FORM --- */
-        .booking-details {
-            flex: 1;
-            padding-right: 20px;
-            border-right: 1px solid rgba(255,255,255,0.2);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        h2 { margin-top: 0; color: #ffb400; font-size: 2rem; margin-bottom: 5px;}
-        .subtitle { font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8; }
-        
-        label { display: block; margin: 15px 0 5px; font-size: 0.9rem; font-weight: 500;}
-        
-        select, input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.3);
-            background: rgba(0,0,0,0.4);
-            color: white;
-            outline: none;
-            font-size: 1rem;
-        }
-        option { background: #333; }
-
-        /* --- RIGHT: SEATS --- */
-        .bus-layout {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-        .seat-header {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        /* THE SEAT GRID */
-        .seat-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 40px) 30px repeat(2, 40px); 
-            gap: 10px;
-            background: rgba(255,255,255,0.05);
+        .home-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
             padding: 20px;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.1);
-            max-height: 500px; /* Scrollable if too tall */
-            overflow-y: auto;
+            /* No background box, just pure text */
         }
 
-        .seat {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+        .home-content h1 { 
+            font-size: 3.5rem; 
+            margin-bottom: 10px; 
+            color: #ffb400; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            /* Strong shadow for readability */
+            text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+            line-height: 1.1;
+        }
+
+        .home-content p { 
+            font-size: 1.2rem; 
+            margin-bottom: 40px; 
+            letter-spacing: 1px; 
+            color: #fff;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+            font-weight: 300;
+        }
+
+        .btn-home {
+            padding: 18px 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #000;
+            background: #ffb400;
+            border: none;
+            border-radius: 50px; /* Pill shape */
             cursor: pointer;
-            display: flex;
-            align-items: center;
+            transition: transform 0.2s, background 0.2s;
+            text-transform: uppercase;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        .btn-home:hover {
+            transform: scale(1.05);
+            background: #ffc840;
+        }
+
+        .btn-home:active {
+            transform: scale(0.95);
+        }
+
+        /* =========================================
+           SECTION 2: BOOKING SYSTEM
+           ========================================= */
+        #booking-section {
+            display: none; 
+            position: absolute;
+            top: 0; left: 0; 
+            width: 100%; 
+            min-height: 100vh; /* Allow scrolling */
+            background: #111; /* Fallback */
+            background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2069&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            align-items: center; /* Center vertically on desktop */
             justify-content: center;
-            font-size: 0.75rem;
+            padding: 20px;
+        }
+
+        /* MAIN CONTAINER (The Card) */
+        .main-container {
+            display: flex; 
+            flex-direction: row; 
+            gap: 40px;
+            background: #1a1a1a; 
+            padding: 40px; 
+            border-radius: 15px;
+            border: 1px solid #333;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            color: white; 
+            max-width: 950px; 
+            width: 100%;
+            margin-top: 20px; /* Space for back button */
+            margin-bottom: 20px;
+        }
+
+        /* Back Button */
+        .btn-back {
+            position: fixed; /* Always visible */
+            top: 20px; left: 20px;
+            background: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(5px);
+            border: 1px solid #555;
+            color: white; 
+            padding: 10px 20px; 
+            border-radius: 30px; 
+            cursor: pointer;
+            z-index: 100; 
+            font-size: 0.9rem;
             font-weight: 600;
-            transition: all 0.2s;
-            color: white;
         }
 
-        /* --- COLOR LOGIC --- */
-        .seat.available { background: rgba(255,255,255,0.2); } /* GREY */
-        .seat.booked { background: #ff4444; cursor: not-allowed; opacity: 0.6; } /* RED */
-        
-        /* VIP SEAT STYLE */
-        .seat.vip { 
-            background: #2980b9; /* BLUE */
-            box-shadow: 0 0 10px rgba(41, 128, 185, 0.5);
-            border: 1px solid #3498db;
-        } 
-
-        .seat:hover:not(.booked) { transform: scale(1.1); filter: brightness(1.2); }
-        
-        /* SELECTED STATE (Yellow) */
-        .seat.selected { 
-            background: #ffb400 !important; 
-            color: black; 
-            font-weight: bold; 
-            box-shadow: 0 0 15px #ffb400; 
-            transform: scale(1.1); 
+        /* Form Styling */
+        .booking-details { 
+            flex: 1; 
+            padding-right: 20px; 
+            border-right: 1px solid #333; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
         }
+
+        h2 { margin-top: 0; color: #ffb400; font-size: 1.8rem; margin-bottom: 5px;}
+        .subtitle { font-size: 0.9rem; margin-bottom: 20px; color: #888; }
+        
+        label { display: block; margin: 12px 0 5px; font-size: 0.9rem; font-weight: 500; color: #ccc;}
+        
+        select, input { 
+            width: 100%; 
+            padding: 14px; /* Larger touch target */
+            border-radius: 8px; 
+            border: 1px solid #444; 
+            background: #252525; 
+            color: white; 
+            outline: none; 
+            font-size: 1rem; 
+        }
+        
+        .price-tag { background: #222; border: 1px solid #333; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center; }
+        .price-amount { font-size: 1.8rem; font-weight: bold; color: #ffb400; }
+        
+        /* Seat Layout */
+        .bus-layout { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; 
+        }
+        
+        .seat-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        
+        .seat-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 40px) 30px repeat(2, 40px); 
+            gap: 10px; 
+            background: #222; 
+            padding: 20px; 
+            border-radius: 12px; 
+            border: 1px solid #333; 
+            max-height: 450px; 
+            overflow-y: auto; /* Scrollable seats */
+        }
+        
+        .seat { 
+            width: 40px; height: 40px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 0.75rem; font-weight: 600; 
+            transition: all 0.2s; 
+            color: white; 
+        }
+        .seat.available { background: #444; }
+        .seat.booked { background: #c0392b; cursor: not-allowed; }
+        .seat.vip { background: #2980b9; }
+        
+        .seat:hover:not(.booked) { background: #ffb400; color: black; }
+        .seat.selected { background: #ffb400 !important; color: black; font-weight: bold; box-shadow: 0 0 10px #ffb400; }
         
         .aisle-spacer { grid-column: 3; } 
-
-        .legend { margin-top:15px; font-size: 0.75rem; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;}
-        .legend span { display: flex; align-items: center; gap: 5px; }
+        .legend { margin-top:15px; font-size: 0.8rem; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; color: #ccc;}
         .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-
-        .btn-book {
-            margin-top: 30px;
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(45deg, #ffb400, #ff8c00);
-            color: white;
-            border: none;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            border-radius: 8px;
-            text-transform: uppercase;
+        
+        .btn-book { 
+            margin-top: 25px; 
+            width: 100%; 
+            padding: 16px; 
+            background: #ffb400; 
+            color: black; 
+            border: none; 
+            font-weight: bold; 
+            font-size: 1.1rem; 
+            cursor: pointer; 
+            border-radius: 8px; 
+            text-transform: uppercase; 
+            box-shadow: 0 4px 15px rgba(255, 180, 0, 0.3);
         }
 
-        /* --- RESPONSIVE --- */
-        @media (max-width: 768px) {
-            body { align-items: flex-start; }
-            .glass-container { flex-direction: column; padding: 20px; gap: 30px; }
-            .booking-details { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 30px; padding-right: 0;}
-            .seat-grid { grid-template-columns: repeat(2, 35px) 20px repeat(2, 35px); gap: 8px; padding: 15px; }
+        /* TICKET POPUP */
+        #ticketModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; color: black; padding: 25px; border-radius: 10px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 0 100px rgba(0,0,0,0.9); z-index: 200; border-top: 8px solid #ffb400; }
+        .ticket-info { margin: 15px 0; text-align: left; padding: 15px; background: #f8f8f8; border: 1px solid #ddd; border-radius: 5px; }
+        .ticket-info p { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; border-bottom: 1px dashed #eee; padding-bottom: 5px; }
+        .barcode { height: 40px; background: repeating-linear-gradient(90deg, #000 0px, #000 2px, #fff 2px, #fff 4px); margin-top: 20px; }
+        .modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-print { flex: 1; padding: 12px; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;}
+        .btn-close { flex: 1; padding: 12px; background: #ddd; color: black; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;}
+
+        /* =========================================
+           MOBILE & RESPONSIVE RULES 
+           ========================================= */
+        @media (max-width: 800px) {
+            /* Adjust Homepage Text Size */
+            .home-content h1 { font-size: 2.5rem; }
+            .home-content p { font-size: 1rem; }
+
+            /* Switch Booking Section to Stacked Layout */
+            #booking-section {
+                display: none; /* JS toggles this to flex/block */
+                height: auto;
+                min-height: 100vh;
+                padding-top: 70px; /* Space for back button */
+                padding-bottom: 30px;
+                align-items: flex-start; /* Start from top */
+            }
+
+            .main-container {
+                flex-direction: column; /* Stack details on top of seats */
+                gap: 30px;
+                padding: 25px;
+            }
+
+            .booking-details {
+                border-right: none;
+                border-bottom: 1px solid #333;
+                padding-right: 0;
+                padding-bottom: 30px;
+            }
+
+            /* Adjust Seat Grid for Narrow Screens */
+            .seat-grid {
+                grid-template-columns: repeat(2, 35px) 25px repeat(2, 35px);
+                gap: 8px;
+                padding: 15px;
+                /* Limit height so page isn't endless */
+                max-height: 350px; 
+            }
             .seat { width: 35px; height: 35px; font-size: 0.7rem; }
+            
+            /* Ensure modal fits */
+            #ticketModal { width: 85%; }
         }
 
-        /* --- TICKET POPUP --- */
-        #ticketModal {
-            display: none;
-            position: fixed;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: white; color: black; padding: 25px;
-            border-radius: 15px; width: 90%; max-width: 350px;
-            text-align: center; box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            z-index: 100; border-top: 5px solid #ffb400;
+        /* Small Phones (iPhone SE etc) */
+        @media (max-width: 380px) {
+            .home-content h1 { font-size: 2rem; }
+            .seat-grid { grid-template-columns: repeat(2, 30px) 15px repeat(2, 30px); gap: 5px; }
+            .seat { width: 30px; height: 30px; font-size: 0.6rem; }
         }
-        .ticket-info { margin: 20px 0; text-align: left; padding: 15px; background: #f5f5f5; border-radius: 10px; }
-        .barcode { height: 40px; background: repeating-linear-gradient(90deg, #000 0px, #000 2px, #fff 2px, #fff 4px); margin-top: 15px; }
+
+        @media print {
+            body * { visibility: hidden; }
+            #ticketModal, #ticketModal * { visibility: visible; }
+            #ticketModal { position: absolute; left: 0; top: 0; width: 100%; border: 2px solid #000; box-shadow: none; transform: none; }
+            .modal-buttons { display: none; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="glass-container">
-        <div class="booking-details">
-            <h2>Jumanda Tours</h2>
-            <div class="subtitle">Luxury 40-Seater Coach</div>
-            
-            <label>Full Name</label>
-            <input type="text" id="passengerName" placeholder="Enter full name">
+    <!-- HOME SECTION -->
+    <div id="home-section">
+        <video autoplay muted loop playsinline id="bgVideo">
+            <source src="image/review.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
 
-            <label>From</label>
-            <select id="fromCity"><option>Nairobi</option><option>Emali</option><option>Voi</option><option>Mombasa</option></select>
-
-            <label>To</label>
-            <select id="toCity"><option>Mombasa</option><option>Voi</option><option>Emali</option><option>Nairobi</option></select>
-
-            <label>Date</label>
-            <input type="date" id="travelDate">
-
-            <p style="margin-top: 25px;">Selected: <strong id="selectedSeatDisplay" style="color: #ffb400;">None</strong></p>
-            <button class="btn-book" onclick="submitBooking()">CONFIRM BOOKING</button>
+        <div class="home-content">
+            <h1>Jumanda Tours</h1>
+            <p>Luxury Travel: Nairobi ⇄ Mombasa</p>
+            <button class="btn-home" onclick="goToBooking()">Book Now</button>
         </div>
+    </div>
 
-        <div class="bus-layout">
-            <div class="seat-header">
-                <h3>Select Seat</h3>
-                <div style="font-size: 0.8rem; opacity: 0.7;">Driver <span style="color:#2ecc71">●</span></div>
-            </div>
-            
-            <div class="seat-grid" id="seatMap">
+    <!-- BOOKING SECTION -->
+    <div id="booking-section">
+        <button class="btn-back" onclick="goToHome()">← Back</button>
+
+        <div class="main-container">
+            <!-- FORM -->
+            <div class="booking-details">
+                <h2>Book Your Seat</h2>
+                <div class="subtitle">Select your journey details</div>
+                
+                <label>Passenger Name</label>
+                <input type="text" id="passengerName" placeholder="Enter full name">
+
+                <label>From</label>
+                <select id="fromCity" onchange="calculatePrice()">
+                    <option value="0">Nairobi</option>
+                    <option value="1">Emali</option>
+                    <option value="2">Voi</option>
+                    <option value="3">Mombasa</option>
+                </select>
+
+                <label>To</label>
+                <select id="toCity" onchange="calculatePrice()">
+                    <option value="3" selected>Mombasa</option>
+                    <option value="2">Voi</option>
+                    <option value="1">Emali</option>
+                    <option value="0">Nairobi</option>
+                </select>
+
+                <label>Travel Date</label>
+                <input type="date" id="travelDate">
+
+                <div class="price-tag">
+                    <div class="price-label">Total Fare</div>
+                    <div class="price-amount" id="totalPrice">Ksh 3,000</div>
                 </div>
 
-            <div class="legend">
-                <span><div class="dot" style="background:#2980b9"></div> VIP</span>
-                <span><div class="dot" style="background:rgba(255,255,255,0.2)"></div> Standard</span>
-                <span><div class="dot" style="background:#ff4444"></div> Booked</span>
-                <span><div class="dot" style="background:#ffb400"></div> You</span>
+                <p style="margin-top: 15px; font-size: 0.9rem; color: #aaa;">Seat: <strong id="selectedSeatDisplay" style="color: #ffb400;">None</strong></p>
+                <button class="btn-book" onclick="generateTicket()">Generate Ticket</button>
+            </div>
+
+            <!-- SEATS -->
+            <div class="bus-layout">
+                <div class="seat-header">
+                    <h3>Select Seat</h3>
+                    <div style="font-size: 0.8rem; opacity: 0.7;">Driver <span style="color:#2ecc71">●</span></div>
+                </div>
+                <div class="seat-grid" id="seatMap"></div>
+                <div class="legend">
+                    <span><div class="dot" style="background:#2980b9"></div> VIP</span>
+                    <span><div class="dot" style="background:#444"></div> Std</span>
+                    <span><div class="dot" style="background:#c0392b"></div> Taken</span>
+                    <span><div class="dot" style="background:#ffb400"></div> You</span>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- TICKET POPUP -->
     <div id="ticketModal">
         <div class="ticket-header">
-            <h3>JUMANDA TOURS</h3>
-            <p style="font-size: 0.8rem; color: #666;">e-Ticket Receipt</p>
+            <h3 style="margin: 0; color: #000;">JUMANDA TOURS</h3>
+            <p style="font-size: 0.8rem; color: #555; margin: 5px 0 0 0;">OFFICIAL TICKET</p>
         </div>
         <div class="ticket-info">
-            <p><strong>Passenger:</strong> <span id="ticketName"></span></p>
-            <p><strong>Route:</strong> <span id="ticketRoute"></span></p>
-            <p><strong>Date:</strong> <span id="ticketDate"></span></p>
-            <p><strong>Seat:</strong> <span id="ticketSeat" style="color: #ffb400; font-weight: bold;"></span></p>
-            <p><strong>Type:</strong> <span id="ticketType"></span></p>
-            <p><strong>Ticket ID:</strong> <span id="ticketId"></span></p>
+            <p><span>Name:</span> <strong id="ticketName"></strong></p>
+            <p><span>Route:</span> <strong id="ticketRoute"></strong></p>
+            <p><span>Date:</span> <strong id="ticketDate"></strong></p>
+            <p><span>Seat:</span> <strong id="ticketSeat" style="color: #d35400;"></strong></p>
+            <p><span>Price:</span> <strong id="ticketPrice" style="color: #d35400;"></strong></p>
+            <p><span>ID:</span> <strong id="ticketId" style="font-family: monospace;"></strong></p>
         </div>
         <div class="barcode"></div>
-        <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #333; color: white; border: none; border-radius: 5px;">Print & Close</button>
+        <div class="modal-buttons">
+            <button class="btn-print" onclick="window.print()">Print</button>
+            <button class="btn-close" onclick="closeTicket()">Close</button>
+        </div>
     </div>
 
     <script>
-        // --- JAVASCRIPT LOGIC ---
+        // --- JAVASCRIPT ---
+        function goToBooking() {
+            document.getElementById('home-section').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('home-section').style.display = 'none';
+                document.getElementById('booking-section').style.display = 'flex';
+                document.getElementById('bgVideo').pause();
+                // Ensure scrolling is reset
+                window.scrollTo(0, 0);
+            }, 500);
+        }
+
+        function goToHome() {
+            document.getElementById('booking-section').style.display = 'none';
+            document.getElementById('home-section').style.display = 'flex';
+            document.getElementById('home-section').style.opacity = '1';
+            document.getElementById('bgVideo').play();
+        }
+
         let selectedSeat = null;
         let selectedType = "Standard";
+        const cityNames = ["Nairobi", "Emali", "Voi", "Mombasa"];
 
         function loadSeats() {
             const seatMap = document.getElementById('seatMap');
             seatMap.innerHTML = ''; 
-
-            // 10 Rows * 4 Columns = 40 Seats
             const rows = 10; 
             const cols = ['A', 'B', 'AISLE', 'C', 'D'];
 
@@ -263,29 +443,15 @@
                     } else {
                         let seatId = `${r}${c}`;
                         let seatDiv = document.createElement('div');
-                        
-                        // LOGIC: Define Booking and VIP status
-                        // 1. Randomly book some seats (Simulating backend)
                         let isBooked = (seatId === '3A' || seatId === '5C' || seatId === '8B' || seatId === '1C');
+                        let isVip = (r === 1); 
+
+                        if (isBooked) seatDiv.className = 'seat booked';
+                        else if (isVip) seatDiv.className = 'seat vip'; 
+                        else seatDiv.className = 'seat available';
                         
-                        // 2. Define VIP (Row 1)
-                        let isVip = (r === 1);
-
-                        // 3. Apply Classes
-                        if (isBooked) {
-                            seatDiv.className = 'seat booked';
-                        } else if (isVip) {
-                            seatDiv.className = 'seat vip'; // Blue
-                        } else {
-                            seatDiv.className = 'seat available'; // Grey
-                        }
-
                         seatDiv.innerText = seatId;
-                        
-                        // Click Event
-                        if (!isBooked) {
-                            seatDiv.onclick = () => selectSeat(seatDiv, seatId, isVip ? "VIP (Front Row)" : "Standard");
-                        }
+                        if (!isBooked) seatDiv.onclick = () => selectSeat(seatDiv, seatId, isVip ? "VIP" : "Standard");
                         seatMap.appendChild(seatDiv);
                     }
                 });
@@ -300,30 +466,46 @@
             document.getElementById('selectedSeatDisplay').innerText = `${seatId} (${type})`;
         }
 
-        function submitBooking() {
-            const name = document.getElementById('passengerName').value;
-            const from = document.getElementById('fromCity').value;
-            const to = document.getElementById('toCity').value;
-            const date = document.getElementById('travelDate').value;
+        function calculatePrice() {
+            const fromIndex = parseInt(document.getElementById('fromCity').value);
+            const toIndex = parseInt(document.getElementById('toCity').value);
+            let stops = Math.abs(toIndex - fromIndex);
+            if (stops === 0) stops = 0; 
+            let price = stops * 1000;
+            document.getElementById('totalPrice').innerText = `Ksh ${price.toLocaleString()}`;
+            return price;
+        }
 
-            if (!selectedSeat) { alert("Please select a seat."); return; }
+        function generateTicket() {
+            const name = document.getElementById('passengerName').value;
+            const fromIndex = document.getElementById('fromCity').value;
+            const toIndex = document.getElementById('toCity').value;
+            const date = document.getElementById('travelDate').value;
+            const price = calculatePrice();
+
+            if (fromIndex === toIndex) { alert("Departure and Destination cannot be the same!"); return; }
+            if (!selectedSeat) { alert("Please select a seat from the diagram."); return; }
             if (!name || !date) { alert("Please fill in Name and Date."); return; }
 
             const randomTicketId = "JMD-" + Math.floor(Math.random() * 10000);
             
             document.getElementById('ticketName').innerText = name;
-            document.getElementById('ticketSeat').innerText = selectedSeat;
-            document.getElementById('ticketType').innerText = selectedType;
+            document.getElementById('ticketRoute').innerText = `${cityNames[fromIndex]} ➝ ${cityNames[toIndex]}`;
+            document.getElementById('ticketSeat').innerText = `${selectedSeat} (${selectedType})`;
+            document.getElementById('ticketPrice').innerText = `Ksh ${price.toLocaleString()}`;
             document.getElementById('ticketId').innerText = randomTicketId;
-            document.getElementById('ticketRoute').innerText = `${from} ➔ ${to}`;
             document.getElementById('ticketDate').innerText = date;
             
             document.getElementById('ticketModal').style.display = 'block';
-            document.querySelector('.glass-container').style.filter = 'blur(5px)';
+        }
+
+        function closeTicket() {
+            document.getElementById('ticketModal').style.display = 'none';
         }
 
         document.getElementById('travelDate').valueAsDate = new Date();
         loadSeats();
+        calculatePrice(); 
     </script>
 </body>
 </html>
