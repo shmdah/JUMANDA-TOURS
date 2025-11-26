@@ -3,36 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jumanda Tours | Ticketing</title>
+    <title>Jumanda Tours | 40 Seater VIP</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
         /* --- GLOBAL STYLES --- */
+        * { box-sizing: border-box; }
+        
         body {
             font-family: 'Poppins', sans-serif;
-            /* High Quality Bus Background */
             background: url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2069&auto=format&fit=crop') no-repeat center center/cover;
-            height: 100vh;
+            background-attachment: fixed;
+            min-height: 100vh;
             margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            padding: 20px 10px;
         }
 
-        /* Dark Overlay */
         body::before {
             content: '';
-            position: absolute;
+            position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             z-index: -1;
         }
 
-        /* --- GLASS CONTAINER --- */
+        /* --- MAIN CONTAINER --- */
         .glass-container {
             display: flex;
-            gap: 40px; /* Space between form and seats */
+            flex-direction: row;
+            gap: 40px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
@@ -42,11 +44,10 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
             color: white;
             max-width: 950px;
-            width: 90%;
-            height: auto;
+            width: 100%;
         }
 
-        /* --- LEFT SIDE: FORM --- */
+        /* --- LEFT: FORM --- */
         .booking-details {
             flex: 1;
             padding-right: 20px;
@@ -71,17 +72,15 @@
             outline: none;
             font-size: 1rem;
         }
-
-        input::placeholder { color: rgba(255,255,255,0.5); }
         option { background: #333; }
 
-        /* --- RIGHT SIDE: BUS LAYOUT --- */
+        /* --- RIGHT: SEATS --- */
         .bus-layout {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
         }
 
         .seat-header {
@@ -92,55 +91,61 @@
             margin-bottom: 15px;
         }
 
-        .steering-wheel {
-            font-size: 1.5rem;
-            color: #2ecc71; /* Green dot for driver */
-        }
-
         /* THE SEAT GRID */
         .seat-grid {
             display: grid;
-            /* 2 seats, gap, 2 seats */
             grid-template-columns: repeat(2, 40px) 30px repeat(2, 40px); 
-            gap: 12px;
+            gap: 10px;
             background: rgba(255,255,255,0.05);
-            padding: 25px;
+            padding: 20px;
             border-radius: 15px;
             border: 1px solid rgba(255,255,255,0.1);
+            max-height: 500px; /* Scrollable if too tall */
+            overflow-y: auto;
         }
 
         .seat {
             width: 40px;
             height: 40px;
-            background: rgba(255,255,255,0.2);
             border-radius: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            color: white;
         }
 
-        .seat:hover { background: #ffb400; color: black; transform: scale(1.05); }
+        /* --- COLOR LOGIC --- */
+        .seat.available { background: rgba(255,255,255,0.2); } /* GREY */
+        .seat.booked { background: #ff4444; cursor: not-allowed; opacity: 0.6; } /* RED */
         
-        /* Seat Status Colors */
-        .seat.booked { background: #ff4444; cursor: not-allowed; opacity: 0.5; color: white; }
-        .seat.selected { background: #ffb400; color: black; font-weight: bold; box-shadow: 0 0 15px #ffb400; transform: scale(1.1); }
+        /* VIP SEAT STYLE */
+        .seat.vip { 
+            background: #2980b9; /* BLUE */
+            box-shadow: 0 0 10px rgba(41, 128, 185, 0.5);
+            border: 1px solid #3498db;
+        } 
+
+        .seat:hover:not(.booked) { transform: scale(1.1); filter: brightness(1.2); }
+        
+        /* SELECTED STATE (Yellow) */
+        .seat.selected { 
+            background: #ffb400 !important; 
+            color: black; 
+            font-weight: bold; 
+            box-shadow: 0 0 15px #ffb400; 
+            transform: scale(1.1); 
+        }
         
         .aisle-spacer { grid-column: 3; } 
 
-        .legend {
-            margin-top:20px; 
-            font-size: 0.8rem; 
-            display: flex; 
-            gap: 15px;
-        }
+        .legend { margin-top:15px; font-size: 0.75rem; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;}
         .legend span { display: flex; align-items: center; gap: 5px; }
         .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 
-        /* --- BUTTON --- */
         .btn-book {
             margin-top: 30px;
             width: 100%;
@@ -153,35 +158,29 @@
             cursor: pointer;
             border-radius: 8px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
         }
-        .btn-book:hover {
-            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.4);
-            transform: translateY(-2px);
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            body { align-items: flex-start; }
+            .glass-container { flex-direction: column; padding: 20px; gap: 30px; }
+            .booking-details { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 30px; padding-right: 0;}
+            .seat-grid { grid-template-columns: repeat(2, 35px) 20px repeat(2, 35px); gap: 8px; padding: 15px; }
+            .seat { width: 35px; height: 35px; font-size: 0.7rem; }
         }
 
         /* --- TICKET POPUP --- */
         #ticketModal {
             display: none;
             position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            color: black;
-            padding: 30px;
-            border-radius: 15px;
-            width: 350px;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            z-index: 100;
-            border-top: 5px solid #ffb400;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; color: black; padding: 25px;
+            border-radius: 15px; width: 90%; max-width: 350px;
+            text-align: center; box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            z-index: 100; border-top: 5px solid #ffb400;
         }
-        .ticket-header h3 { margin: 0; color: #333; }
         .ticket-info { margin: 20px 0; text-align: left; padding: 15px; background: #f5f5f5; border-radius: 10px; }
-        .ticket-info p { margin: 5px 0; font-size: 0.95rem; border-bottom: 1px dashed #ddd; padding-bottom: 5px; }
         .barcode { height: 40px; background: repeating-linear-gradient(90deg, #000 0px, #000 2px, #fff 2px, #fff 4px); margin-top: 15px; }
-
     </style>
 </head>
 <body>
@@ -189,27 +188,21 @@
     <div class="glass-container">
         <div class="booking-details">
             <h2>Jumanda Tours</h2>
-            <div class="subtitle">Luxury Travel: Nairobi ⇄ Mombasa</div>
+            <div class="subtitle">Luxury 40-Seater Coach</div>
             
             <label>Full Name</label>
-            <input type="text" id="passengerName" placeholder="Enter your full name">
+            <input type="text" id="passengerName" placeholder="Enter full name">
 
             <label>From</label>
-            <select id="fromCity">
-                <option>Nairobi</option> <option>Emali</option> 
-                <option>Voi</option> <option>Mombasa</option>
-            </select>
+            <select id="fromCity"><option>Nairobi</option><option>Emali</option><option>Voi</option><option>Mombasa</option></select>
 
             <label>To</label>
-            <select id="toCity">
-                <option>Mombasa</option> <option>Voi</option> 
-                <option>Emali</option> <option>Nairobi</option>
-            </select>
+            <select id="toCity"><option>Mombasa</option><option>Voi</option><option>Emali</option><option>Nairobi</option></select>
 
             <label>Date</label>
             <input type="date" id="travelDate">
 
-            <p style="margin-top: 25px; font-size: 0.9rem;">Selected Seat: <strong id="selectedSeatDisplay" style="color: #ffb400;">None</strong></p>
+            <p style="margin-top: 25px;">Selected: <strong id="selectedSeatDisplay" style="color: #ffb400;">None</strong></p>
             <button class="btn-book" onclick="submitBooking()">CONFIRM BOOKING</button>
         </div>
 
@@ -223,9 +216,10 @@
                 </div>
 
             <div class="legend">
-                <span><div class="dot" style="background:rgba(255,255,255,0.2)"></div> Available</span>
+                <span><div class="dot" style="background:#2980b9"></div> VIP</span>
+                <span><div class="dot" style="background:rgba(255,255,255,0.2)"></div> Standard</span>
                 <span><div class="dot" style="background:#ff4444"></div> Booked</span>
-                <span><div class="dot" style="background:#ffb400"></div> Selected</span>
+                <span><div class="dot" style="background:#ffb400"></div> You</span>
             </div>
         </div>
     </div>
@@ -235,31 +229,30 @@
             <h3>JUMANDA TOURS</h3>
             <p style="font-size: 0.8rem; color: #666;">e-Ticket Receipt</p>
         </div>
-        
         <div class="ticket-info">
             <p><strong>Passenger:</strong> <span id="ticketName"></span></p>
             <p><strong>Route:</strong> <span id="ticketRoute"></span></p>
             <p><strong>Date:</strong> <span id="ticketDate"></span></p>
-            <p><strong>Seat No:</strong> <span id="ticketSeat" style="color: #ffb400; font-weight: bold;"></span></p>
+            <p><strong>Seat:</strong> <span id="ticketSeat" style="color: #ffb400; font-weight: bold;"></span></p>
+            <p><strong>Type:</strong> <span id="ticketType"></span></p>
             <p><strong>Ticket ID:</strong> <span id="ticketId"></span></p>
         </div>
-
         <div class="barcode"></div>
-        <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer;">Print & Close</button>
+        <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #333; color: white; border: none; border-radius: 5px;">Print & Close</button>
     </div>
 
     <script>
         // --- JAVASCRIPT LOGIC ---
-        
         let selectedSeat = null;
+        let selectedType = "Standard";
 
-        // 1. Generate Seats (Runs immediately)
         function loadSeats() {
             const seatMap = document.getElementById('seatMap');
             seatMap.innerHTML = ''; 
 
-            const rows = 5; // 5 Rows
-            const cols = ['A', 'B', 'AISLE', 'C', 'D']; // Layout
+            // 10 Rows * 4 Columns = 40 Seats
+            const rows = 10; 
+            const cols = ['A', 'B', 'AISLE', 'C', 'D'];
 
             for (let r = 1; r <= rows; r++) {
                 cols.forEach(c => {
@@ -271,15 +264,27 @@
                         let seatId = `${r}${c}`;
                         let seatDiv = document.createElement('div');
                         
-                        // Fake some booked seats for realism
-                        let status = (seatId === '1A' || seatId === '2C' || seatId === '4B') ? 'booked' : 'available';
+                        // LOGIC: Define Booking and VIP status
+                        // 1. Randomly book some seats (Simulating backend)
+                        let isBooked = (seatId === '3A' || seatId === '5C' || seatId === '8B' || seatId === '1C');
+                        
+                        // 2. Define VIP (Row 1)
+                        let isVip = (r === 1);
 
-                        seatDiv.className = `seat ${status}`; 
+                        // 3. Apply Classes
+                        if (isBooked) {
+                            seatDiv.className = 'seat booked';
+                        } else if (isVip) {
+                            seatDiv.className = 'seat vip'; // Blue
+                        } else {
+                            seatDiv.className = 'seat available'; // Grey
+                        }
+
                         seatDiv.innerText = seatId;
                         
-                        // Add click event only if available
-                        if (status === 'available') {
-                            seatDiv.onclick = () => selectSeat(seatDiv, seatId);
+                        // Click Event
+                        if (!isBooked) {
+                            seatDiv.onclick = () => selectSeat(seatDiv, seatId, isVip ? "VIP (Front Row)" : "Standard");
                         }
                         seatMap.appendChild(seatDiv);
                     }
@@ -287,53 +292,37 @@
             }
         }
 
-        // 2. Handle Clicking a Seat
-        function selectSeat(element, seatId) {
-            // Unselect previous
+        function selectSeat(element, seatId, type) {
             document.querySelectorAll('.seat.selected').forEach(s => s.classList.remove('selected'));
-            
-            // Select new
             element.classList.add('selected');
             selectedSeat = seatId;
-            document.getElementById('selectedSeatDisplay').innerText = seatId;
+            selectedType = type;
+            document.getElementById('selectedSeatDisplay').innerText = `${seatId} (${type})`;
         }
 
-        // 3. Handle Booking Button
         function submitBooking() {
             const name = document.getElementById('passengerName').value;
             const from = document.getElementById('fromCity').value;
             const to = document.getElementById('toCity').value;
             const date = document.getElementById('travelDate').value;
 
-            // Validation
-            if (!selectedSeat) {
-                alert("Please select a seat on the right side.");
-                return;
-            }
-            if (!name || !date) {
-                alert("Please fill in your Name and Date.");
-                return;
-            }
+            if (!selectedSeat) { alert("Please select a seat."); return; }
+            if (!name || !date) { alert("Please fill in Name and Date."); return; }
 
-            // Generate fake ticket data
             const randomTicketId = "JMD-" + Math.floor(Math.random() * 10000);
             
-            // Fill Ticket Modal
             document.getElementById('ticketName').innerText = name;
             document.getElementById('ticketSeat').innerText = selectedSeat;
+            document.getElementById('ticketType').innerText = selectedType;
             document.getElementById('ticketId').innerText = randomTicketId;
             document.getElementById('ticketRoute').innerText = `${from} ➔ ${to}`;
             document.getElementById('ticketDate').innerText = date;
             
-            // Show Modal & Blur Background
             document.getElementById('ticketModal').style.display = 'block';
             document.querySelector('.glass-container').style.filter = 'blur(5px)';
         }
 
-        // Set default date to today
         document.getElementById('travelDate').valueAsDate = new Date();
-
-        // Run the seat generator
         loadSeats();
     </script>
 </body>
